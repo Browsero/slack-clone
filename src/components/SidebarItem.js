@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { switchRoom } from "../features/appSlice";
 import { datebase } from "../firebase";
 
+
 function SidebarItem({ title, Icon, addChannelOption, id }) {
   const dispatch = useDispatch();
 
@@ -65,5 +66,9 @@ const SidebarOption = styled.div`
   padding: 8px;
   > span {
     padding: 7px;
+  }
+  @media (max-width: 660px) {
+    font-size: 0.8rem;
+    padding-bottom: 80px;
   }
 `;

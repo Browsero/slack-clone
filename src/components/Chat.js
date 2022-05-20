@@ -25,16 +25,21 @@ function Chat() {
         .collection("messages")
         .orderBy("timestamp", "asc")
   );
-  useEffect(() => {}, [roomId, loading]);
+  useEffect(() => {
+    chatRef?.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [roomId, loading]);
 
   return (
     <ChatContainer>
-      <>
+        {roomDetails && roomMessages && (      
+        <>
         <Header>
           <LeftHeader>
             {roomDetails ? (
               <h4>
-                <strong>{roomDetails.data().name}</strong>
+                <strong>#{roomDetails.data().name}</strong>
                 <FavoriteBorderIcon />
               </h4>
             ) : (
@@ -49,7 +54,6 @@ function Chat() {
             <p>Details</p>
           </RightHeader>
         </Header>
-      </>
       <Messages>
         {loading ? (
           <img
@@ -74,7 +78,8 @@ function Chat() {
         <ChatBottom ref={chatRef} />
       </Messages>
 
-      <ChatInput channelName={roomDetails?.data().name} channelId={roomId} />
+      <ChatInput chatRef={chatRef} channelName={roomDetails?.data().name} channelId={roomId} />
+      </>)}
     </ChatContainer>
   );
 }
@@ -118,12 +123,12 @@ const RightHeader = styled.div`
 `;
 
 const Messages = styled.div`
-  padding: 16px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
 const ChatBottom = styled.div`
-  padding-bottom: 80px;
+  padding-bottom: 150px;
 `;

@@ -1,17 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import Avatar from "@mui/material/Avatar";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+// import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SearchIcon from "@mui/icons-material/Search";
 import HelpIcon from "@mui/icons-material/Help";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
 
 function Header() {
+  const [user] = useAuthState(auth)
+  const logOut = e => {auth.signOut()}
+
   return (
     <Container>
       {/* Left section */}
       <HeaderLeft>
-        <AvatarContainer />
-        <AccessTimeIcon />
+        <AvatarContainer alt={user?.displayName} src={user?.photoURL} />
+        <LogoutIcon onClick={logOut} / >
       </HeaderLeft>
 
       {/* Middle Section */}
@@ -47,6 +53,7 @@ const HeaderLeft = styled.div`
   align-items: center;
   margin-left: 24px;
   justify-content: space-between;
+  cursor: pointer;
 
   > .MuiSvgIcon-root {
     margin-right: 30px;
@@ -54,7 +61,6 @@ const HeaderLeft = styled.div`
 `;
 
 const AvatarContainer = styled(Avatar)`
-  cursor: pointer;
   transition: 0.2s ease-in-out;
 
   :hover {

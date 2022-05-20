@@ -14,13 +14,15 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AddIcon from "@mui/icons-material/Add";
 import { useCollection } from "react-firebase-hooks/firestore";
-import {datebase} from '../firebase';
+import { auth, datebase } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Sidebar() {
-
   const [channels, loading, error] = useCollection(
     datebase.collection("rooms")
   );
+
+  const [user] = useAuthState(auth);
 
   return (
     <SidebarContainer>
@@ -29,7 +31,7 @@ function Sidebar() {
           <h2>Test Server</h2>
           <h3>
             <FiberManualRecordIcon />
-            Username
+            {user.displayName}
           </h3>
         </SidebarTopInfo>
         <EditIcon />
@@ -51,7 +53,14 @@ function Sidebar() {
 
       <SidebarItemsContainer>
         <SidebarItem title="Add Channel" Icon={AddIcon} addChannelOption />
-        {channels?.docs.map(doc => (<SidebarItem key={doc.id} id={doc.id} selectChannel title={doc.data().name} />))}
+        {channels?.docs.map((doc) => (
+          <SidebarItem
+            key={doc.id}
+            id={doc.id}
+            selectChannel
+            title={doc.data().name}
+          />
+        ))}
       </SidebarItemsContainer>
     </SidebarContainer>
   );
@@ -66,6 +75,10 @@ const SidebarContainer = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 64px;
   max-width: 260px;
+  @media (max-width: 660px) {
+    overflow-y: scroll;
+    min-width: 130px;
+  }
 `;
 
 const SidebarHeader = styled.div`
@@ -75,7 +88,6 @@ const SidebarHeader = styled.div`
   padding: 12px;
   padding-bottom: 10px;
   justify-content: space-between;
-  cursor: default;
 
   > .MuiSvgIcon-root {
     padding: 8px;
@@ -85,7 +97,9 @@ const SidebarHeader = styled.div`
     font-size: 1.3rem;
     cursor: pointer;
     transition: 0.2s ease-in-out;
-
+    @media (max-width: 660px) {
+      font-size: 0.5rem;
+    }
     :hover {
       opacity: 0.9;
     }
@@ -120,4 +134,8 @@ const SidebarItemsContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  @media (max-width: 660px) {
+    font-size: 0.6rem;
+    gap: 10px;
+  }
 `;

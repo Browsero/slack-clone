@@ -1,10 +1,12 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { datebase } from "../firebase";
+import { auth, datebase } from "../firebase";
 import { serverTimestamp } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-function ChatInput({ channelName,channelId }) {
+function ChatInput({ channelName, channelId, chatRef }) {
+  const [user] = useAuthState(auth);
   const [input, setInput] = useState("");
   const sendMessage = (event) => {
     event.preventDefault();
@@ -16,8 +18,12 @@ function ChatInput({ channelName,channelId }) {
     datebase.collection("rooms").doc(channelId).collection("messages").add({
       message: input,
       timestamp: serverTimestamp(),
-      user: "Test User",
-      avatar: "https://i.stack.imgur.com/dr5qp.jpg",
+      user: user?.displayName,
+      avatar: user?.photoURL,
+    });
+
+    chatRef?.current.scrollIntoView({
+      behavior: "smooth",
     });
 
     setInput("");
@@ -59,6 +65,9 @@ const InputContainer = styled.div`
     border-radius: 15px;
     border: 1px solid gray;
     width: 60%;
+    @media (max-width: 660px) {
+      width: 40%;
+    }
   }
 
   > form > button {
