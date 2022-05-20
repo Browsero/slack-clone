@@ -1,8 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { switchRoom } from "../features/appSlice";
 import { datebase } from "../firebase";
 
-function SidebarItem({ title, Icon, addChannelOption }) {
+function SidebarItem({ title, Icon, addChannelOption, id }) {
+  const dispatch = useDispatch();
+
   const addChannel = () => {
     const channelName = prompt("Enter the channel name");
 
@@ -13,7 +17,13 @@ function SidebarItem({ title, Icon, addChannelOption }) {
     }
   };
 
-  const selectChannel = () => {};
+  const selectChannel = () => {
+    if(id){
+      dispatch(switchRoom({
+        roomId: id
+      }))
+    }
+  };
 
   return (
     <SidebarItemContainer

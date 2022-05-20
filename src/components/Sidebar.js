@@ -26,10 +26,10 @@ function Sidebar() {
     <SidebarContainer>
       <SidebarHeader>
         <SidebarTopInfo>
-          <h2>LBG MONGOLIA</h2>
+          <h2>Test Server</h2>
           <h3>
             <FiberManualRecordIcon />
-            Hubert Madej
+            Username
           </h3>
         </SidebarTopInfo>
         <EditIcon />
@@ -51,7 +51,7 @@ function Sidebar() {
 
       <SidebarItemsContainer>
         <SidebarItem title="Add Channel" Icon={AddIcon} addChannelOption />
-        {channels?.docs.map(doc => (<SidebarItem key={doc.id} title={doc.data().name} />))}
+        {channels?.docs.map(doc => (<SidebarItem key={doc.id} id={doc.id} selectChannel title={doc.data().name} />))}
       </SidebarItemsContainer>
     </SidebarContainer>
   );
