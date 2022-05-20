@@ -46,6 +46,7 @@ const provider = new firebase.auth.GoogleAuthProvider();
 export { auth, provider, datebase };
 ```
 
+You can use hard-coded data instead of using .env file.
 
 To run this application use:
 
